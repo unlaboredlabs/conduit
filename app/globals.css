@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fff7ed;
+  --foreground: #0f172a;
+  --muted: #475569;
+  --panel: rgba(255, 255, 255, 0.78);
+  --panel-strong: rgba(255, 255, 255, 0.92);
+  --border: rgba(148, 163, 184, 0.28);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-ibm-plex-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  background-image:
+    radial-gradient(circle at top left, rgba(251, 146, 60, 0.18), transparent 32%),
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.16), transparent 28%),
+    linear-gradient(180deg, #fff7ed 0%, #f8fafc 100%);
+  font-family: var(--font-space-grotesk), sans-serif;
+}
+
+::selection {
+  background: rgba(249, 115, 22, 0.18);
+}
+
+.panel {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  backdrop-filter: blur(22px);
+  border-radius: 2rem;
+  box-shadow:
+    0 20px 80px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.metric-card {
+  border: 1px solid var(--border);
+  background: var(--panel-strong);
+  border-radius: 1.6rem;
+  padding: 1.25rem;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.05);
+}
+
+.metric-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: #64748b;
+}
+
+.metric-value {
+  margin-top: 0.5rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.metric-caption {
+  margin-top: 0.35rem;
+  color: #64748b;
+  font-size: 0.92rem;
+}
+
+.section-kicker {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: #f97316;
+}
+
+.section-title {
+  margin-top: 0.4rem;
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.input {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0.9rem 1rem;
+  color: #0f172a;
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.input:focus {
+  border-color: rgba(249, 115, 22, 0.7);
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
+}
+
+.button-primary,
+.button-secondary,
+.button-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.85rem 1.2rem;
+  font-size: 0.94rem;
+  font-weight: 600;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.button-primary:hover,
+.button-secondary:hover,
+.button-danger:hover {
+  transform: translateY(-1px);
+}
+
+.button-primary {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+  color: white;
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.28);
+}
+
+.button-secondary {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f172a;
+}
+
+.button-danger {
+  background: rgba(225, 29, 72, 0.1);
+  color: #be123c;
+}
+
+.button-primary:disabled,
+.button-secondary:disabled,
+.button-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  background: rgba(148, 163, 184, 0.12);
+  color: #475569;
+}
+
+.status-pill--good {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.status-pill--warn {
+  background: rgba(245, 158, 11, 0.14);
+  color: #b45309;
+}
+
+.status-pill--bad {
+  background: rgba(225, 29, 72, 0.12);
+  color: #be123c;
+}
+
+.empty-state {
+  border: 1px dashed rgba(148, 163, 184, 0.45);
+  border-radius: 1.5rem;
+  padding: 1.2rem;
+  color: #64748b;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+code,
+pre,
+.font-mono {
+  font-family: var(--font-ibm-plex-mono), monospace;
+}
