@@ -349,9 +349,10 @@ export function FrpsPage({
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>FRPS provisioned</DialogTitle>
+            <DialogTitle>FRPS provisioning queued</DialogTitle>
             <DialogDescription>
-              Save these connection details before closing.
+              Conduit accepted the request and queued it for the assigned node.
+              The instance is usable once its runtime state reaches running.
             </DialogDescription>
           </DialogHeader>
           {createdConnection && (
