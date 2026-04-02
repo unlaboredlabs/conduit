@@ -110,7 +110,7 @@ FRPS operations are asynchronous:
 
 - Create and region-provision endpoints create the database record and enqueue a `provision_frps` job.
 - Start, stop, restart, retry, and delete endpoints enqueue jobs for the edge agent.
-- `DELETE /api/frps/:id` queues deletion first. The reserved IP is removed only later, when the agent reports successful completion and the controller performs cleanup.
+- `DELETE /api/frps/:id` queues deletion first. The reserved IP is removed only later, when the agent reports successful completion; then job completion removes the FRPS and linked public IP records from Convex.
 
 ## Shared Types
 
@@ -201,7 +201,7 @@ Returned by `GET /api/nodes/:id`.
 Notes:
 
 - `frpsInstances` is the raw `frpsInstances` table output, not the summarized FRPS shape used elsewhere.
-- This list is not filtered. Fully deleted FRPS records can still appear here.
+- This list is not filtered. Existing legacy soft-deleted FRPS records can still appear here, but successful delete jobs now remove FRPS records entirely.
 
 ### RegistrationTokenSummary
 
@@ -1146,7 +1146,7 @@ Complete a claimed job.
   - all completions append a job event
   - on `failed`, the related FRPS instance moves to `runtimeState=error` and records `lastError`
   - on successful `stop_frps`, the FRPS instance becomes `desiredState=stopped` and `runtimeState=stopped`
-  - on successful `delete_frps`, the FRPS instance and linked public IP are marked deleted
+  - on successful `delete_frps`, the FRPS instance and linked public IP records are deleted
   - on successful `provision_frps`, `start_frps`, or `restart_frps`, the FRPS instance becomes `desiredState=running` and `runtimeState=running`
   - if `containerName` is supplied on a successful non-delete job, it replaces the stored FRPS container name
 

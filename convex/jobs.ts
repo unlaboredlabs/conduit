@@ -184,17 +184,8 @@ export const completeJob = internalMutation({
     }
 
     if (job.kind === "delete_frps") {
-      await ctx.db.patch("frpsInstances", instance._id, {
-        desiredState: "deleted",
-        runtimeState: "deleted",
-        deletedAt: now,
-        lastError: null,
-        updatedAt: now,
-      });
-      await ctx.db.patch("publicIps", instance.publicIpId, {
-        status: "deleted",
-        updatedAt: now,
-      });
+      await ctx.db.delete(instance.publicIpId);
+      await ctx.db.delete(instance._id);
       return { ok: true };
     }
 

@@ -60,6 +60,21 @@ const projectFrpsSummary = async (
   };
 };
 
+const deleteFrpsProvisioningRecords = async (
+  ctx: MutationCtx,
+  frpsId: Id<"frpsInstances">,
+) => {
+  const instance = await ctx.db.get(frpsId);
+  if (!instance) {
+    return { ok: true };
+  }
+
+  await ctx.db.delete(instance.publicIpId);
+  await ctx.db.delete(frpsId);
+
+  return { ok: true };
+};
+
 export const listFrps = internalQuery({
   args: {},
   handler: async (ctx) => {
@@ -191,17 +206,7 @@ export const rollbackFrpsProvisioning = internalMutation({
   args: {
     frpsId: v.id("frpsInstances"),
   },
-  handler: async (ctx, args) => {
-    const instance = await ctx.db.get(args.frpsId);
-    if (!instance) {
-      return { ok: true };
-    }
-
-    await ctx.db.delete(instance.publicIpId);
-    await ctx.db.delete(args.frpsId);
-
-    return { ok: true };
-  },
+  handler: async (ctx, args) => await deleteFrpsProvisioningRecords(ctx, args.frpsId),
 });
 
 export const setFrpsError = internalMutation({
@@ -220,30 +225,16 @@ export const setFrpsError = internalMutation({
   },
 });
 
+export const deleteAfterCleanup = internalMutation({
+  args: {
+    frpsId: v.id("frpsInstances"),
+  },
+  handler: async (ctx, args) => await deleteFrpsProvisioningRecords(ctx, args.frpsId),
+});
+
 export const markDeletedAfterCleanup = internalMutation({
   args: {
     frpsId: v.id("frpsInstances"),
   },
-  handler: async (ctx, args) => {
-    const instance = await ctx.db.get(args.frpsId);
-    if (!instance) {
-      return { ok: true };
-    }
-
-    const now = Date.now();
-    await ctx.db.patch("frpsInstances", args.frpsId, {
-      desiredState: "deleted",
-      runtimeState: "deleted",
-      deletedAt: now,
-      lastError: null,
-      updatedAt: now,
-    });
-
-    await ctx.db.patch("publicIps", instance.publicIpId, {
-      status: "deleted",
-      updatedAt: now,
-    });
-
-    return { ok: true };
-  },
+  handler: async (ctx, args) => await deleteFrpsProvisioningRecords(ctx, args.frpsId),
 });
